@@ -3,7 +3,6 @@ import { TopBar } from "./components/TopBar";
 import { ResultsTabs } from "./components/ResultsTabs";
 import { BalanceSummary } from "./components/BalanceSummary";
 import { CarDiagram, type PartKey } from "./components/CarDiagram";
-import { Modal } from "./components/Modal";
 import { MassGeometryPanel } from "./panels/MassGeometryPanel";
 import { SuspensionPanel } from "./panels/SuspensionPanel";
 import { TirePanel } from "./panels/TirePanel";
@@ -12,13 +11,13 @@ import { PowertrainPanel } from "./panels/PowertrainPanel";
 import { BrakesPanel } from "./panels/BrakesPanel";
 import { useStore } from "./store";
 
-const PANELS: Record<PartKey, { title: string; render: () => JSX.Element }> = {
-  mass_geometry: { title: "Mass & geometry", render: () => <MassGeometryPanel /> },
-  suspension: { title: "Suspension", render: () => <SuspensionPanel /> },
-  tire: { title: "Tires", render: () => <TirePanel /> },
-  aero: { title: "Aerodynamics", render: () => <AeroPanel /> },
-  powertrain: { title: "Powertrain", render: () => <PowertrainPanel /> },
-  brakes: { title: "Brakes", render: () => <BrakesPanel /> },
+const PANELS: Record<PartKey, () => JSX.Element> = {
+  mass_geometry: () => <MassGeometryPanel />,
+  suspension: () => <SuspensionPanel />,
+  tire: () => <TirePanel />,
+  aero: () => <AeroPanel />,
+  powertrain: () => <PowertrainPanel />,
+  brakes: () => <BrakesPanel />,
 };
 
 export default function App() {
@@ -34,31 +33,40 @@ export default function App() {
     <div className="h-full flex flex-col bg-canvas">
       <TopBar />
       <div className="flex-1 min-h-0 grid grid-cols-12 gap-4 p-4">
-        <aside className="col-span-3 panel overflow-auto min-h-0">
-          {setup ? (
-            <CarDiagram onSelect={setOpenPart} />
-          ) : (
-            <div className="p-4 text-[12px] text-ink-3">
-              Loading preset from backend…
-            </div>
-          )}
+        {/* LEFT — car diagram on top, selected part's parameters below */}
+        <aside className="col-span-4 flex flex-col gap-4 min-h-0">
+          <div className="panel">
+            {setup ? (
+              <CarDiagram selected={openPart} onSelect={setOpenPart} />
+            ) : (
+              <div className="p-4 text-[12px] text-ink-3">
+                Loading preset from backend…
+              </div>
+            )}
+          </div>
+          <div className="panel flex-1 overflow-auto min-h-0">
+            {openPart ? (
+              <div className="p-1">{PANELS[openPart]()}</div>
+            ) : (
+              <div className="px-6 py-10 text-center text-ink-3 text-[12px] leading-relaxed">
+                Click a part of the car above to adjust its parameters.
+                <br />
+                <span className="text-ink-3/70">
+                  Changes update the results panel on the right as you tweak.
+                </span>
+              </div>
+            )}
+          </div>
         </aside>
-        <main className="col-span-7 min-h-0">
-          <ResultsTabs />
-        </main>
-        <aside className="col-span-2 min-h-0 overflow-auto">
-          <BalanceSummary />
-        </aside>
-      </div>
 
-      {openPart && (
-        <Modal
-          title={PANELS[openPart].title}
-          onClose={() => setOpenPart(null)}
-        >
-          {PANELS[openPart].render()}
-        </Modal>
-      )}
+        {/* RIGHT — derived results: balance strip on top, tabs below */}
+        <main className="col-span-8 min-h-0 flex flex-col gap-4">
+          <BalanceSummary />
+          <div className="flex-1 min-h-0">
+            <ResultsTabs />
+          </div>
+        </main>
+      </div>
     </div>
   );
 }
