@@ -54,7 +54,7 @@ export function AccelTab() {
                 type: "scatter",
                 mode: "lines",
                 name: "Traction-limited",
-                line: { color: "#ffb86b", width: 3 },
+                line: { color: "#d97706", width: 3 },
               },
               {
                 x: powerX,
@@ -62,7 +62,7 @@ export function AccelTab() {
                 type: "scatter",
                 mode: "lines",
                 name: "Power-limited",
-                line: { color: "#5ee0c4", width: 3 },
+                line: { color: "#0d9488", width: 3 },
               },
             ]}
             layout={{

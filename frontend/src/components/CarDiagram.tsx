@@ -30,12 +30,17 @@ interface Props {
 export function CarDiagram({ onSelect }: Props) {
   const [hover, setHover] = useState<PartKey | null>(null);
 
-  // Common styles
-  const baseStroke = "#2a3441";
-  const fillBody = "#1c242f";
-  const fillDark = "#141a22";
-  const fillRubber = "#0b1015";
-  const accent = "#5ee0c4";
+  // Light-mode palette. The panel background is white, so the car is rendered
+  // in slate tones to stand out against the surface.
+  const baseStroke = "#94a3b8"; // slate-400
+  const fillBody = "#f1f5f9"; // slate-100
+  const fillMid = "#e2e8f0"; // slate-200
+  const fillCockpit = "#ffffff"; // shows panel bg through the cockpit hole
+  const fillRubber = "#334155"; // slate-700 — tires
+  const fillEngine = "#cbd5e1"; // slate-300
+  const susStroke = "#64748b"; // slate-500
+  const brakeStroke = "#d97706"; // amber-600 — warm accent for brakes
+  const accent = "#0d9488"; // teal-600
 
   const partProps = (key: PartKey) => ({
     onMouseEnter: () => setHover(key),
@@ -43,7 +48,8 @@ export function CarDiagram({ onSelect }: Props) {
     onClick: () => onSelect(key),
     className: "cursor-pointer transition-all duration-150",
     style: {
-      filter: hover === key ? `drop-shadow(0 0 4px ${accent})` : undefined,
+      filter:
+        hover === key ? `drop-shadow(0 0 3px ${accent})` : undefined,
     },
   });
 
@@ -63,13 +69,10 @@ export function CarDiagram({ onSelect }: Props) {
 
       <svg
         viewBox="0 0 400 720"
-        className="w-full h-auto bg-canvas"
+        className="w-full h-auto bg-panel"
         role="img"
         aria-label="FSAE car diagram with clickable parts"
       >
-        {/* Track / shadow under the car */}
-        <ellipse cx="200" cy="365" rx="170" ry="320" fill="#0e141b" />
-
         {/* ------------------------------------------------------------ AERO */}
         {/* Front wing */}
         <g {...partProps("aero")}>
@@ -84,11 +87,11 @@ export function CarDiagram({ onSelect }: Props) {
             strokeWidth={partStrokeWidth("aero")}
           />
           {/* Front wing flaps */}
-          <line x1="100" y1="30" x2="300" y2="30" stroke={partStroke("aero", "#5b6573")} strokeWidth={0.7} />
-          <line x1="100" y1="40" x2="300" y2="40" stroke={partStroke("aero", "#5b6573")} strokeWidth={0.7} />
+          <line x1="100" y1="30" x2="300" y2="30" stroke={partStroke("aero", "#cbd5e1")} strokeWidth={0.7} />
+          <line x1="100" y1="40" x2="300" y2="40" stroke={partStroke("aero", "#cbd5e1")} strokeWidth={0.7} />
           {/* Front wing endplates */}
-          <rect x="85" y="18" width="6" height="50" rx="2" fill={fillDark} stroke={partStroke("aero")} />
-          <rect x="309" y="18" width="6" height="50" rx="2" fill={fillDark} stroke={partStroke("aero")} />
+          <rect x="85" y="18" width="6" height="50" rx="2" fill={fillMid} stroke={partStroke("aero")} />
+          <rect x="309" y="18" width="6" height="50" rx="2" fill={fillMid} stroke={partStroke("aero")} />
 
           {/* Rear wing */}
           <rect
@@ -101,15 +104,15 @@ export function CarDiagram({ onSelect }: Props) {
             stroke={partStroke("aero")}
             strokeWidth={partStrokeWidth("aero")}
           />
-          <line x1="75" y1="615" x2="325" y2="615" stroke={partStroke("aero", "#5b6573")} strokeWidth={0.7} />
-          <line x1="75" y1="630" x2="325" y2="630" stroke={partStroke("aero", "#5b6573")} strokeWidth={0.7} />
-          <line x1="75" y1="645" x2="325" y2="645" stroke={partStroke("aero", "#5b6573")} strokeWidth={0.7} />
+          <line x1="75" y1="615" x2="325" y2="615" stroke={partStroke("aero", "#cbd5e1")} strokeWidth={0.7} />
+          <line x1="75" y1="630" x2="325" y2="630" stroke={partStroke("aero", "#cbd5e1")} strokeWidth={0.7} />
+          <line x1="75" y1="645" x2="325" y2="645" stroke={partStroke("aero", "#cbd5e1")} strokeWidth={0.7} />
           {/* Rear wing endplates */}
-          <rect x="60" y="600" width="6" height="65" rx="2" fill={fillDark} stroke={partStroke("aero")} />
-          <rect x="334" y="600" width="6" height="65" rx="2" fill={fillDark} stroke={partStroke("aero")} />
+          <rect x="60" y="600" width="6" height="65" rx="2" fill={fillMid} stroke={partStroke("aero")} />
+          <rect x="334" y="600" width="6" height="65" rx="2" fill={fillMid} stroke={partStroke("aero")} />
           {/* Rear wing pillars */}
-          <rect x="170" y="525" width="8" height="80" fill={fillDark} stroke={partStroke("aero", "#2a3441")} />
-          <rect x="222" y="525" width="8" height="80" fill={fillDark} stroke={partStroke("aero", "#2a3441")} />
+          <rect x="170" y="525" width="8" height="80" fill={fillMid} stroke={partStroke("aero", "#cbd5e1")} />
+          <rect x="222" y="525" width="8" height="80" fill={fillMid} stroke={partStroke("aero", "#cbd5e1")} />
         </g>
 
         {/* ---------------------------------------------------- MASS & BODY */}
@@ -132,15 +135,15 @@ export function CarDiagram({ onSelect }: Props) {
             stroke={partStroke("mass_geometry")}
             strokeWidth={partStrokeWidth("mass_geometry")}
           />
-          {/* Cockpit opening */}
+          {/* Cockpit opening — fills with panel background to look "open" */}
           <rect
             x="170"
             y="180"
             width="60"
             height="110"
             rx="20"
-            fill={fillDark}
-            stroke={partStroke("mass_geometry", "#5b6573")}
+            fill={fillCockpit}
+            stroke={partStroke("mass_geometry", "#cbd5e1")}
             strokeWidth={0.8}
           />
           {/* Seat back / roll hoop position */}
@@ -150,16 +153,16 @@ export function CarDiagram({ onSelect }: Props) {
             width="80"
             height="14"
             rx="3"
-            fill={fillDark}
-            stroke={partStroke("mass_geometry", "#3a4757")}
+            fill={fillMid}
+            stroke={partStroke("mass_geometry", "#94a3b8")}
           />
           {/* Steering wheel hint */}
-          <circle cx="200" cy="210" r="10" fill="none" stroke={partStroke("mass_geometry", "#5b6573")} strokeWidth={1.2} />
+          <circle cx="200" cy="210" r="10" fill="none" stroke={partStroke("mass_geometry", "#94a3b8")} strokeWidth={1.2} />
           {/* CG marker */}
-          <g opacity="0.7">
-            <circle cx="200" cy="335" r="6" fill="none" stroke={partStroke("mass_geometry", "#5ee0c4")} strokeWidth={0.8} />
-            <line x1="194" y1="335" x2="206" y2="335" stroke={partStroke("mass_geometry", "#5ee0c4")} strokeWidth={0.8} />
-            <line x1="200" y1="329" x2="200" y2="341" stroke={partStroke("mass_geometry", "#5ee0c4")} strokeWidth={0.8} />
+          <g opacity="0.85">
+            <circle cx="200" cy="335" r="6" fill="none" stroke={partStroke("mass_geometry", accent)} strokeWidth={0.9} />
+            <line x1="194" y1="335" x2="206" y2="335" stroke={partStroke("mass_geometry", accent)} strokeWidth={0.9} />
+            <line x1="200" y1="329" x2="200" y2="341" stroke={partStroke("mass_geometry", accent)} strokeWidth={0.9} />
           </g>
         </g>
 
@@ -172,19 +175,24 @@ export function CarDiagram({ onSelect }: Props) {
             width="80"
             height="110"
             rx="4"
-            fill="#212a36"
+            fill={fillEngine}
             stroke={partStroke("powertrain")}
             strokeWidth={partStrokeWidth("powertrain")}
           />
           {/* Engine cylinders (combustion hint) */}
-          <line x1="170" y1="385" x2="170" y2="465" stroke={partStroke("powertrain", "#3a4757")} strokeWidth={1.4} />
-          <line x1="183" y1="385" x2="183" y2="465" stroke={partStroke("powertrain", "#3a4757")} strokeWidth={1.4} />
-          <line x1="197" y1="385" x2="197" y2="465" stroke={partStroke("powertrain", "#3a4757")} strokeWidth={1.4} />
-          <line x1="210" y1="385" x2="210" y2="465" stroke={partStroke("powertrain", "#3a4757")} strokeWidth={1.4} />
-          <line x1="223" y1="385" x2="223" y2="465" stroke={partStroke("powertrain", "#3a4757")} strokeWidth={1.4} />
-          <line x1="236" y1="385" x2="236" y2="465" stroke={partStroke("powertrain", "#3a4757")} strokeWidth={1.4} />
+          {[170, 183, 197, 210, 223, 236].map((x) => (
+            <line
+              key={x}
+              x1={x}
+              y1={385}
+              x2={x}
+              y2={465}
+              stroke={partStroke("powertrain", "#94a3b8")}
+              strokeWidth={1.4}
+            />
+          ))}
           {/* Exhaust */}
-          <circle cx="244" cy="495" r="5" fill={fillDark} stroke={partStroke("powertrain", "#5b6573")} />
+          <circle cx="244" cy="495" r="5" fill={fillMid} stroke={partStroke("powertrain", "#94a3b8")} />
         </g>
 
         {/* -------------------------------------------------------- SUSPENSION */}
@@ -194,7 +202,7 @@ export function CarDiagram({ onSelect }: Props) {
           <polyline
             points="80,110  152,140  80,160"
             fill="none"
-            stroke={partStroke("suspension", "#5b6573")}
+            stroke={partStroke("suspension", susStroke)}
             strokeWidth={partStrokeWidth("suspension", 2.5)}
             strokeLinejoin="round"
             strokeLinecap="round"
@@ -203,7 +211,7 @@ export function CarDiagram({ onSelect }: Props) {
           <polyline
             points="320,110  248,140  320,160"
             fill="none"
-            stroke={partStroke("suspension", "#5b6573")}
+            stroke={partStroke("suspension", susStroke)}
             strokeWidth={partStrokeWidth("suspension", 2.5)}
             strokeLinejoin="round"
             strokeLinecap="round"
@@ -212,7 +220,7 @@ export function CarDiagram({ onSelect }: Props) {
           <polyline
             points="80,440  152,470  80,490"
             fill="none"
-            stroke={partStroke("suspension", "#5b6573")}
+            stroke={partStroke("suspension", susStroke)}
             strokeWidth={partStrokeWidth("suspension", 2.5)}
             strokeLinejoin="round"
             strokeLinecap="round"
@@ -221,7 +229,7 @@ export function CarDiagram({ onSelect }: Props) {
           <polyline
             points="320,440  248,470  320,490"
             fill="none"
-            stroke={partStroke("suspension", "#5b6573")}
+            stroke={partStroke("suspension", susStroke)}
             strokeWidth={partStrokeWidth("suspension", 2.5)}
             strokeLinejoin="round"
             strokeLinecap="round"
@@ -233,7 +241,7 @@ export function CarDiagram({ onSelect }: Props) {
             width="90"
             height="3"
             rx="1"
-            fill={partStroke("suspension", "#3a4757")}
+            fill={partStroke("suspension", susStroke)}
           />
           <rect
             x="155"
@@ -241,7 +249,7 @@ export function CarDiagram({ onSelect }: Props) {
             width="90"
             height="3"
             rx="1"
-            fill={partStroke("suspension", "#3a4757")}
+            fill={partStroke("suspension", susStroke)}
           />
         </g>
 
@@ -255,8 +263,8 @@ export function CarDiagram({ onSelect }: Props) {
             height="80"
             rx="9"
             fill={fillRubber}
-            stroke={partStroke("tire")}
-            strokeWidth={partStrokeWidth("tire", 1.5)}
+            stroke={partStroke("tire", "#1e293b")}
+            strokeWidth={partStrokeWidth("tire", 1)}
           />
           {/* Front-right */}
           <rect
@@ -266,8 +274,8 @@ export function CarDiagram({ onSelect }: Props) {
             height="80"
             rx="9"
             fill={fillRubber}
-            stroke={partStroke("tire")}
-            strokeWidth={partStrokeWidth("tire", 1.5)}
+            stroke={partStroke("tire", "#1e293b")}
+            strokeWidth={partStrokeWidth("tire", 1)}
           />
           {/* Rear-left */}
           <rect
@@ -277,8 +285,8 @@ export function CarDiagram({ onSelect }: Props) {
             height="86"
             rx="10"
             fill={fillRubber}
-            stroke={partStroke("tire")}
-            strokeWidth={partStrokeWidth("tire", 1.5)}
+            stroke={partStroke("tire", "#1e293b")}
+            strokeWidth={partStrokeWidth("tire", 1)}
           />
           {/* Rear-right */}
           <rect
@@ -288,8 +296,8 @@ export function CarDiagram({ onSelect }: Props) {
             height="86"
             rx="10"
             fill={fillRubber}
-            stroke={partStroke("tire")}
-            strokeWidth={partStrokeWidth("tire", 1.5)}
+            stroke={partStroke("tire", "#1e293b")}
+            strokeWidth={partStrokeWidth("tire", 1)}
           />
           {/* Tread hints */}
           {[
@@ -304,7 +312,7 @@ export function CarDiagram({ onSelect }: Props) {
               y1={y}
               x2={x + 38}
               y2={y}
-              stroke={partStroke("tire", "#1f262e")}
+              stroke={partStroke("tire", "#64748b")}
               strokeWidth={0.6}
             />
           ))}
@@ -321,45 +329,45 @@ export function CarDiagram({ onSelect }: Props) {
                 cx={cx}
                 cy={cy}
                 r={hover === "brakes" ? 10 : 8}
-                fill="#2a3441"
-                stroke={partStroke("brakes", "#ffb86b")}
+                fill={fillMid}
+                stroke={partStroke("brakes", brakeStroke)}
                 strokeWidth={partStrokeWidth("brakes", 1.5)}
               />
               <circle
                 cx={cx}
                 cy={cy}
                 r={3}
-                fill={fillDark}
-                stroke={partStroke("brakes", "#5b6573")}
+                fill={fillRubber}
+                stroke={partStroke("brakes", "#94a3b8")}
                 strokeWidth={0.6}
               />
             </g>
           ))}
         </g>
 
-        {/* Direction arrow — purely decorative, shows "front" */}
+        {/* Direction arrows — purely decorative */}
         <g opacity="0.55">
-          <line x1="200" y1="690" x2="200" y2="708" stroke="#5b6573" strokeWidth={1} />
-          <polygon points="200,683 195,695 205,695" fill="#5b6573" />
+          <line x1="200" y1="690" x2="200" y2="708" stroke="#94a3b8" strokeWidth={1} />
+          <polygon points="200,683 195,695 205,695" fill="#94a3b8" />
           <text
             x="200"
             y="715"
             textAnchor="middle"
             fontSize="9"
-            fill="#5b6573"
+            fill="#94a3b8"
             fontFamily="JetBrains Mono, monospace"
           >
             REAR
           </text>
         </g>
         <g opacity="0.55">
-          <polygon points="200,10 195,2 205,2" fill="#5b6573" />
+          <polygon points="200,10 195,2 205,2" fill="#94a3b8" />
           <text
             x="200"
             y="14"
             textAnchor="middle"
             fontSize="9"
-            fill="#5b6573"
+            fill="#94a3b8"
             fontFamily="JetBrains Mono, monospace"
           >
             FRONT

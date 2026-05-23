@@ -189,10 +189,10 @@ export const useStore = create<State>((set, get) => ({
 
   runAll: async () => {
     // Fire the fast ones in parallel. Lap sim is heavier so it stays on its
-    // own and finishes when it finishes.
+    // own and finishes when it finishes. Skidpad isn't surfaced in the UI
+    // any more — the sweep tab fetches it via the backend's /sweep call.
     await Promise.all([
       get().runStatic(),
-      get().runSkidpad(),
       get().runAccel(),
       get().runGG(),
     ]);

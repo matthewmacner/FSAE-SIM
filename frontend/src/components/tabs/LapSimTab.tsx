@@ -57,7 +57,7 @@ export function LapSimTab() {
                   y: speedKmh,
                   type: "scatter",
                   mode: "lines",
-                  line: { color: "#5ee0c4", width: 2 },
+                  line: { color: "#0d9488", width: 2 },
                   hovertemplate: "%{x:.0f} m<br>%{y:.1f} km/h<extra></extra>",
                 },
               ]}
@@ -82,7 +82,7 @@ export function LapSimTab() {
                   type: "scatter",
                   mode: "lines",
                   name: "ax",
-                  line: { color: "#ffb86b", width: 1.5 },
+                  line: { color: "#d97706", width: 1.5 },
                 },
                 {
                   x: dist,
@@ -90,7 +90,7 @@ export function LapSimTab() {
                   type: "scatter",
                   mode: "lines",
                   name: "ay",
-                  line: { color: "#7eb6ff", width: 1.5 },
+                  line: { color: "#2563eb", width: 1.5 },
                 },
               ]}
               layout={{
@@ -114,7 +114,7 @@ export function LapSimTab() {
                   type: "scatter",
                   mode: "lines",
                   name: "Front",
-                  line: { color: "#5ee0c4", width: 1.5 },
+                  line: { color: "#0d9488", width: 1.5 },
                 },
                 {
                   x: dist,
@@ -122,7 +122,7 @@ export function LapSimTab() {
                   type: "scatter",
                   mode: "lines",
                   name: "Rear",
-                  line: { color: "#ffb86b", width: 1.5 },
+                  line: { color: "#d97706", width: 1.5 },
                 },
               ]}
               layout={{

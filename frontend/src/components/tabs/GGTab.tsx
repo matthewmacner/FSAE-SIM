@@ -2,7 +2,7 @@ import { useStore } from "../../store";
 import { fmt } from "../../format";
 import { ChartFrame } from "../Plot";
 
-const COLORS = ["#5ee0c4", "#7eb6ff", "#ffb86b", "#ff5d6c"];
+const COLORS = ["#0d9488", "#2563eb", "#d97706", "#dc2626"];
 
 export function GGTab() {
   const r = useStore((s) => s.ggResult.data);

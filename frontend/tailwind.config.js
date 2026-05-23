@@ -4,23 +4,24 @@ export default {
   theme: {
     extend: {
       colors: {
-        // FSAE-Sim palette: a calm dark dashboard. Race telemetry feel without
-        // shouting at the user.
-        canvas: "#0b1015",
-        panel: "#141a22",
-        panel2: "#1c242f",
-        edge: "#2a3441",
+        // FSAE-Sim — light palette. Clean, slate-based, with teal as the
+        // primary action color so the dark→light swap reuses existing
+        // utility classes (text-accent, bg-accent, etc.) unchanged.
+        canvas: "#f8fafc", // page background — slate-50
+        panel: "#ffffff", // primary surface — pure white
+        panel2: "#f1f5f9", // secondary surface — slate-100
+        edge: "#e2e8f0", // borders, dividers — slate-200
         ink: {
-          0: "#f5f7fa",
-          1: "#c7d0db",
-          2: "#8a96a6",
-          3: "#5b6573",
+          0: "#0f172a", // primary text — slate-900
+          1: "#334155", // secondary text — slate-700
+          2: "#64748b", // tertiary text — slate-500
+          3: "#94a3b8", // softest text / hints — slate-400
         },
         accent: {
-          DEFAULT: "#5ee0c4",     // teal — primary actions, chart lines
-          warm: "#ffb86b",        // amber — secondary chart series
-          alert: "#ff5d6c",       // red — high-side warnings
-          positive: "#7eb6ff",    // blue — neutral info
+          DEFAULT: "#0d9488", // teal-600 — primary actions, chart lines
+          warm: "#d97706", // amber-600 — secondary chart series
+          alert: "#dc2626", // red-600 — true alerts
+          positive: "#2563eb", // blue-600 — info / neutral series
         },
       },
       fontFamily: {
@@ -28,7 +29,8 @@ export default {
         mono: ["JetBrains Mono", "ui-monospace", "SFMono-Regular", "monospace"],
       },
       boxShadow: {
-        panel: "0 1px 0 rgba(255,255,255,0.04) inset, 0 8px 24px rgba(0,0,0,0.35)",
+        panel:
+          "0 1px 2px rgba(15,23,42,0.04), 0 1px 3px rgba(15,23,42,0.06)",
       },
     },
   },

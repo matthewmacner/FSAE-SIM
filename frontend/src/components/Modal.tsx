@@ -17,7 +17,7 @@ export function Modal({ title, onClose, children }: Props) {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-canvas/80 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-ink-0/40 backdrop-blur-sm"
       onClick={onClose}
     >
       <div

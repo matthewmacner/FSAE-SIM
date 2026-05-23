@@ -1,18 +1,16 @@
 import { useState } from "react";
 import { StaticTab } from "./tabs/StaticTab";
 import { GGTab } from "./tabs/GGTab";
-import { SkidpadTab } from "./tabs/SkidpadTab";
 import { AccelTab } from "./tabs/AccelTab";
 import { LapSimTab } from "./tabs/LapSimTab";
 import { SweepTab } from "./tabs/SweepTab";
 import { useStore } from "../store";
 
-type TabId = "static" | "gg" | "skidpad" | "accel" | "lap" | "sweep";
+type TabId = "static" | "gg" | "accel" | "lap" | "sweep";
 
 const TABS: { id: TabId; label: string }[] = [
   { id: "static", label: "Static" },
   { id: "gg", label: "G-G" },
-  { id: "skidpad", label: "Skidpad" },
   { id: "accel", label: "Acceleration" },
   { id: "lap", label: "Lap sim" },
   { id: "sweep", label: "Sweep" },
@@ -46,7 +44,6 @@ export function ResultsTabs() {
       <div className="flex-1 min-h-0 overflow-auto pr-1">
         {active === "static" && <StaticTab />}
         {active === "gg" && <GGTab />}
-        {active === "skidpad" && <SkidpadTab />}
         {active === "accel" && <AccelTab />}
         {active === "lap" && <LapSimTab />}
         {active === "sweep" && <SweepTab />}

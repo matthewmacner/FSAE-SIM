@@ -73,7 +73,7 @@ export function SweepTab() {
                   y: r.points.map((p) => p.skidpad_time_s ?? null),
                   type: "scatter",
                   mode: "lines+markers",
-                  line: { color: "#5ee0c4", width: 2 },
+                  line: { color: "#0d9488", width: 2 },
                   marker: { size: 8 },
                 },
               ]}
@@ -90,7 +90,7 @@ export function SweepTab() {
                     y0: 0,
                     y1: 1,
                     yref: "paper",
-                    line: { color: "#5b6573", dash: "dash" },
+                    line: { color: "#94a3b8", dash: "dash" },
                   },
                 ],
               }}
@@ -106,7 +106,7 @@ export function SweepTab() {
                   y: r.points.map((p) => p.accel_75m_s ?? null),
                   type: "scatter",
                   mode: "lines+markers",
-                  line: { color: "#ffb86b", width: 2 },
+                  line: { color: "#d97706", width: 2 },
                   marker: { size: 8 },
                 },
               ]}
@@ -123,7 +123,7 @@ export function SweepTab() {
                     y0: 0,
                     y1: 1,
                     yref: "paper",
-                    line: { color: "#5b6573", dash: "dash" },
+                    line: { color: "#94a3b8", dash: "dash" },
                   },
                 ],
               }}
@@ -139,7 +139,7 @@ export function SweepTab() {
                   y: r.points.map((p) => p.tlltd_front_pct ?? null),
                   type: "scatter",
                   mode: "lines+markers",
-                  line: { color: "#7eb6ff", width: 2 },
+                  line: { color: "#2563eb", width: 2 },
                   marker: { size: 8 },
                 },
               ]}
@@ -156,7 +156,7 @@ export function SweepTab() {
                     y0: 0,
                     y1: 1,
                     yref: "paper",
-                    line: { color: "#5b6573", dash: "dash" },
+                    line: { color: "#94a3b8", dash: "dash" },
                   },
                 ],
               }}

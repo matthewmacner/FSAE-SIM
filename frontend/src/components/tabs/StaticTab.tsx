@@ -76,7 +76,7 @@ export function StaticTab() {
                 name: "Mechanical",
                 type: "scatter",
                 mode: "lines+markers",
-                line: { color: "#5ee0c4", width: 2 },
+                line: { color: "#0d9488", width: 2 },
                 marker: { size: 6 },
               },
               {
@@ -85,7 +85,7 @@ export function StaticTab() {
                 name: "Aero",
                 type: "scatter",
                 mode: "lines+markers",
-                line: { color: "#ffb86b", width: 2 },
+                line: { color: "#d97706", width: 2 },
                 marker: { size: 6 },
               },
               {
@@ -94,7 +94,7 @@ export function StaticTab() {
                 name: "Total",
                 type: "scatter",
                 mode: "lines+markers",
-                line: { color: "#7eb6ff", width: 2.5, dash: "dot" },
+                line: { color: "#2563eb", width: 2.5, dash: "dot" },
                 marker: { size: 6 },
               },
             ]}
