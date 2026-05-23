@@ -1,0 +1,85 @@
+{
+  "name": "EV 180 kg (single-motor RWD)",
+  "notes": "Lightweight EV with single-speed reduction. Battery in the floor lowers CG. Single-motor RWD (twin-motor AWD would re-balance per-axle drive — change drivetrain logic for v2).",
+  "mass_geometry": {
+    "total_mass_kg": 210.0,
+    "weight_dist_front_pct": 48.0,
+    "wheelbase_mm": 1530.0,
+    "track_front_mm": 1210.0,
+    "track_rear_mm": 1180.0,
+    "cg_height_mm": 250.0,
+    "unsprung_mass_front_kg": 11.0,
+    "unsprung_mass_rear_kg": 12.0,
+    "yaw_inertia_kgm2": 85.0
+  },
+  "suspension": {
+    "spring_rate_front_N_mm": 38.0,
+    "spring_rate_rear_N_mm": 42.0,
+    "motion_ratio_front": 1.0,
+    "motion_ratio_rear": 1.0,
+    "arb_front_Nm_deg": 90.0,
+    "arb_rear_Nm_deg": 60.0,
+    "arb_motion_ratio_front": 1.0,
+    "arb_motion_ratio_rear": 1.0,
+    "damper_front": {
+      "low_speed_comp_Ns_m": 2200.0,
+      "high_speed_comp_Ns_m": 1300.0,
+      "low_speed_reb_Ns_m": 3200.0,
+      "high_speed_reb_Ns_m": 1900.0
+    },
+    "damper_rear": {
+      "low_speed_comp_Ns_m": 2400.0,
+      "high_speed_comp_Ns_m": 1400.0,
+      "low_speed_reb_Ns_m": 3400.0,
+      "high_speed_reb_Ns_m": 2000.0
+    },
+    "roll_center_front_mm": 30.0,
+    "roll_center_rear_mm": 50.0,
+    "static_camber_front_deg": -2.2,
+    "static_camber_rear_deg": -1.8,
+    "static_toe_front_deg": 0.1,
+    "static_toe_rear_deg": 0.1,
+    "caster_deg": 4.5,
+    "anti_dive_pct": 25.0,
+    "anti_squat_pct": 30.0
+  },
+  "tire": {
+    "compound": "Continental C19 200/470 R13",
+    "peak_mu": 1.50,
+    "cornering_stiffness_N_deg": 900.0,
+    "load_sensitivity_exp": 0.83,
+    "reference_load_N": 1200.0,
+    "rolling_resistance_coef": 0.018,
+    "vertical_stiffness_N_mm": 130.0,
+    "optimal_slip_angle_deg": 6.5,
+    "optimal_slip_ratio": 0.11,
+    "pacejka_B": null,
+    "pacejka_C": null,
+    "pacejka_E": null
+  },
+  "aero": {
+    "cla_front_m2": 1.5,
+    "cla_rear_m2": 1.9,
+    "cda_m2": 1.05,
+    "reference_velocity_ms": 20.0,
+    "air_density_kg_m3": 1.20
+  },
+  "powertrain": {
+    "drivetrain_type": "ev",
+    "torque_curve_rpm": [0, 4000, 8000, 12000, 16000, 18000, 20000],
+    "torque_curve_Nm": [25, 25, 25, 22, 17, 13, 8],
+    "redline_rpm": 20000.0,
+    "final_drive_ratio": 13.5,
+    "gear_ratios": [1.0],
+    "drivetrain_efficiency": 0.94,
+    "tire_radius_mm": 225.0,
+    "battery_capacity_kwh": 6.5,
+    "fuel_capacity_l": null,
+    "fuel_energy_density_mj_l": 32.0
+  },
+  "brakes": {
+    "brake_bias_front_pct": 60.0,
+    "max_brake_torque_front_Nm": 950.0,
+    "max_brake_torque_rear_Nm": 650.0
+  }
+}
