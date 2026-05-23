@@ -1,7 +1,9 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { TopBar } from "./components/TopBar";
 import { ResultsTabs } from "./components/ResultsTabs";
 import { BalanceSummary } from "./components/BalanceSummary";
+import { CarDiagram, type PartKey } from "./components/CarDiagram";
+import { Modal } from "./components/Modal";
 import { MassGeometryPanel } from "./panels/MassGeometryPanel";
 import { SuspensionPanel } from "./panels/SuspensionPanel";
 import { TirePanel } from "./panels/TirePanel";
@@ -10,9 +12,19 @@ import { PowertrainPanel } from "./panels/PowertrainPanel";
 import { BrakesPanel } from "./panels/BrakesPanel";
 import { useStore } from "./store";
 
+const PANELS: Record<PartKey, { title: string; render: () => JSX.Element }> = {
+  mass_geometry: { title: "Mass & geometry", render: () => <MassGeometryPanel /> },
+  suspension: { title: "Suspension", render: () => <SuspensionPanel /> },
+  tire: { title: "Tires", render: () => <TirePanel /> },
+  aero: { title: "Aerodynamics", render: () => <AeroPanel /> },
+  powertrain: { title: "Powertrain", render: () => <PowertrainPanel /> },
+  brakes: { title: "Brakes", render: () => <BrakesPanel /> },
+};
+
 export default function App() {
   const initialize = useStore((s) => s.initialize);
   const setup = useStore((s) => s.setup);
+  const [openPart, setOpenPart] = useState<PartKey | null>(null);
 
   useEffect(() => {
     void initialize();
@@ -22,18 +34,11 @@ export default function App() {
     <div className="h-full flex flex-col bg-canvas">
       <TopBar />
       <div className="flex-1 min-h-0 grid grid-cols-12 gap-4 p-4">
-        <aside className="col-span-3 flex flex-col gap-3 overflow-auto pr-1 min-h-0">
+        <aside className="col-span-3 panel overflow-auto min-h-0">
           {setup ? (
-            <>
-              <MassGeometryPanel />
-              <SuspensionPanel />
-              <TirePanel />
-              <AeroPanel />
-              <PowertrainPanel />
-              <BrakesPanel />
-            </>
+            <CarDiagram onSelect={setOpenPart} />
           ) : (
-            <div className="panel p-4 text-[12px] text-ink-3">
+            <div className="p-4 text-[12px] text-ink-3">
               Loading preset from backend…
             </div>
           )}
@@ -45,6 +50,15 @@ export default function App() {
           <BalanceSummary />
         </aside>
       </div>
+
+      {openPart && (
+        <Modal
+          title={PANELS[openPart].title}
+          onClose={() => setOpenPart(null)}
+        >
+          {PANELS[openPart].render()}
+        </Modal>
+      )}
     </div>
   );
 }
