@@ -30,15 +30,18 @@ interface Props {
 export function CarDiagram({ onSelect }: Props) {
   const [hover, setHover] = useState<PartKey | null>(null);
 
-  // Light-mode palette. The panel background is white, so the car is rendered
-  // in slate tones to stand out against the surface.
+  // Light-mode palette. Everything in the diagram lives in the slate-100
+  // ↔ slate-400 band so it stays airy against a white panel — no hard
+  // contrast from "rubber"-coloured tires.
   const baseStroke = "#94a3b8"; // slate-400
   const fillBody = "#f1f5f9"; // slate-100
   const fillMid = "#e2e8f0"; // slate-200
   const fillCockpit = "#ffffff"; // shows panel bg through the cockpit hole
-  const fillRubber = "#334155"; // slate-700 — tires
-  const fillEngine = "#cbd5e1"; // slate-300
-  const susStroke = "#64748b"; // slate-500
+  const fillRubber = "#cbd5e1"; // slate-300 — soft grey tires
+  const tireStroke = "#94a3b8"; // slate-400 — tire outline
+  const treadStroke = "#cbd5e1"; // slate-300 — tread hints, barely visible
+  const fillEngine = "#e2e8f0"; // slate-200
+  const susStroke = "#94a3b8"; // slate-400
   const brakeStroke = "#d97706"; // amber-600 — warm accent for brakes
   const accent = "#0d9488"; // teal-600
 
@@ -263,7 +266,7 @@ export function CarDiagram({ onSelect }: Props) {
             height="80"
             rx="9"
             fill={fillRubber}
-            stroke={partStroke("tire", "#1e293b")}
+            stroke={partStroke("tire", tireStroke)}
             strokeWidth={partStrokeWidth("tire", 1)}
           />
           {/* Front-right */}
@@ -274,7 +277,7 @@ export function CarDiagram({ onSelect }: Props) {
             height="80"
             rx="9"
             fill={fillRubber}
-            stroke={partStroke("tire", "#1e293b")}
+            stroke={partStroke("tire", tireStroke)}
             strokeWidth={partStrokeWidth("tire", 1)}
           />
           {/* Rear-left */}
@@ -285,7 +288,7 @@ export function CarDiagram({ onSelect }: Props) {
             height="86"
             rx="10"
             fill={fillRubber}
-            stroke={partStroke("tire", "#1e293b")}
+            stroke={partStroke("tire", tireStroke)}
             strokeWidth={partStrokeWidth("tire", 1)}
           />
           {/* Rear-right */}
@@ -296,7 +299,7 @@ export function CarDiagram({ onSelect }: Props) {
             height="86"
             rx="10"
             fill={fillRubber}
-            stroke={partStroke("tire", "#1e293b")}
+            stroke={partStroke("tire", tireStroke)}
             strokeWidth={partStrokeWidth("tire", 1)}
           />
           {/* Tread hints */}
@@ -312,7 +315,7 @@ export function CarDiagram({ onSelect }: Props) {
               y1={y}
               x2={x + 38}
               y2={y}
-              stroke={partStroke("tire", "#64748b")}
+              stroke={partStroke("tire", treadStroke)}
               strokeWidth={0.6}
             />
           ))}
@@ -337,8 +340,8 @@ export function CarDiagram({ onSelect }: Props) {
                 cx={cx}
                 cy={cy}
                 r={3}
-                fill={fillRubber}
-                stroke={partStroke("brakes", "#94a3b8")}
+                fill="#94a3b8"
+                stroke={partStroke("brakes", "#64748b")}
                 strokeWidth={0.6}
               />
             </g>

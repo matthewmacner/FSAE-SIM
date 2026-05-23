@@ -17,11 +17,11 @@ export function Modal({ title, onClose, children }: Props) {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-ink-0/40 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-edge/40 backdrop-blur-sm"
       onClick={onClose}
     >
       <div
-        className="panel w-full max-w-md max-h-[85vh] flex flex-col"
+        className="panel w-full max-w-md max-h-[85vh] flex flex-col shadow-[0_8px_32px_rgba(15,23,42,0.18)]"
         onClick={(e) => e.stopPropagation()}
       >
         <header className="px-4 py-3 border-b border-edge flex items-center justify-between">
