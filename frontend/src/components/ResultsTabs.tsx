@@ -10,7 +10,7 @@ type TabId = "static" | "gg" | "accel" | "lap" | "sweep";
 
 const TABS: { id: TabId; label: string }[] = [
   { id: "static", label: "Static" },
-  { id: "gg", label: "G-G" },
+  { id: "gg", label: "Grip envelope" },
   { id: "accel", label: "Acceleration" },
   { id: "lap", label: "Lap sim" },
   { id: "sweep", label: "Sweep" },
