@@ -23,10 +23,15 @@ interface Props {
 }
 
 /**
- * Side-profile stylized FSAE car. The car faces left (front wing on the
- * left, rear wing on the right) — matches the typical FS press-photo
- * orientation. Each clickable region is a separate <g> with hover + selected
- * highlighting in the accent color.
+ * Side-profile stylized FSAE car, facing RIGHT (rear wing on the left,
+ * nose cone + front wing on the right). The body is drawn as a single
+ * flowing silhouette — engine cover hump, cockpit dip, dash, nose-cone
+ * taper — rather than a collage of rectangles, so it reads as one car
+ * instead of a bunch of pieces.
+ *
+ * Powertrain is represented by surface details on the body (sidepod
+ * grille, airbox bulge, exhaust) so its hotspot doesn't break the
+ * silhouette.
  *
  * viewBox 700 × 280.
  */
@@ -34,19 +39,19 @@ export function CarDiagram({ selected, onSelect }: Props) {
   const [hover, setHover] = useState<PartKey | null>(null);
   const active = hover ?? selected;
 
-  // Light-mode palette. Everything in the slate-100 ↔ slate-400 band.
+  // Soft slate palette. Everything sits in the slate-100..slate-400 band so
+  // the silhouette stays airy on a white panel — a clay-model look.
   const baseStroke = "#94a3b8"; // slate-400
-  const fillBody = "#f1f5f9"; // slate-100
-  const fillMid = "#e2e8f0"; // slate-200
-  const fillCockpit = "#ffffff"; // panel bg shows through
-  const fillRubber = "#cbd5e1"; // slate-300 — soft tires
-  const fillRim = "#f8fafc"; // slate-50 — wheel rim
-  const fillEngine = "#e2e8f0";
-  const fillHelmet = "#94a3b8";
-  const fillVisor = "#475569";
+  const fillBody = "#f1f5f9"; // slate-100 — main body
+  const fillMid = "#e2e8f0"; // slate-200 — sub-elements
+  const fillCockpit = "#cbd5e1"; // slate-300 — cockpit interior
+  const fillRubber = "#cbd5e1"; // slate-300 — tires
+  const fillRim = "#f8fafc"; // slate-50 — wheel rims
+  const fillHelmet = "#94a3b8"; // slate-400 — driver helmet
+  const fillVisor = "#475569"; // slate-700 — visor
   const susStroke = "#94a3b8";
-  const brakeStroke = "#d97706";
-  const accent = "#0d9488";
+  const brakeStroke = "#d97706"; // amber-600
+  const accent = "#0d9488"; // teal-600
 
   const partProps = (key: PartKey) => ({
     onMouseEnter: () => setHover(key),
@@ -80,223 +85,300 @@ export function CarDiagram({ selected, onSelect }: Props) {
         aria-label="FSAE car side profile with clickable parts"
       >
         {/* Subtle ground line */}
-        <line x1="0" y1="240" x2="700" y2="240" stroke="#e2e8f0" strokeWidth="1.5" />
+        <line
+          x1="0"
+          y1="240"
+          x2="700"
+          y2="240"
+          stroke="#e2e8f0"
+          strokeWidth="1.5"
+        />
 
-        {/* ----------------------------------------------------- AERO */}
+        {/* =================================================== AERO ===== */}
         <g {...partProps("aero")}>
-          {/* Front wing — main plane */}
-          <rect
-            x="20"
-            y="208"
-            width="95"
-            height="14"
-            rx="2"
+          {/* Rear wing — left side. Endplate is a tall slim shape. */}
+          <path
+            d="M 22 58 L 56 58 L 56 168 L 38 176 L 22 170 Z"
             fill={fillBody}
             stroke={partStroke("aero")}
             strokeWidth={partStrokeWidth("aero")}
           />
-          {/* Front wing flap (second element) */}
-          <rect
-            x="30"
-            y="197"
-            width="80"
-            height="8"
-            rx="2"
+          {/* Rear-wing horizontal elements (multi-element) */}
+          {[68, 84, 100, 116].map((y) => (
+            <rect
+              key={`rw-${y}`}
+              x="22"
+              y={y}
+              width="138"
+              height="6"
+              rx="1.5"
+              fill={fillMid}
+              stroke={partStroke("aero", "#cbd5e1")}
+              strokeWidth="0.8"
+            />
+          ))}
+          {/* Rear-wing pylons connecting to body */}
+          <path
+            d="M 118 122 L 125 122 L 125 152 L 118 158 Z"
             fill={fillMid}
             stroke={partStroke("aero", "#cbd5e1")}
           />
-          {/* Front wing endplate (vertical, visible from side) */}
-          <rect
-            x="14"
-            y="190"
-            width="8"
-            height="42"
-            rx="1.5"
+          <path
+            d="M 150 122 L 157 122 L 157 152 L 150 158 Z"
             fill={fillMid}
-            stroke={partStroke("aero")}
+            stroke={partStroke("aero", "#cbd5e1")}
           />
 
-          {/* Rear wing endplate (large vertical, signature FS shape) */}
-          <path
-            d="M 540 50 L 660 50 L 660 175 L 600 185 L 540 180 Z"
-            fill={fillBody}
-            stroke={partStroke("aero")}
-            strokeWidth={partStrokeWidth("aero")}
-          />
-          {/* Rear wing horizontal elements (multi-element wing) */}
-          <line x1="540" y1="68" x2="660" y2="68" stroke={partStroke("aero", "#cbd5e1")} strokeWidth="1" />
-          <line x1="540" y1="86" x2="660" y2="86" stroke={partStroke("aero", "#cbd5e1")} strokeWidth="1" />
-          <line x1="540" y1="104" x2="660" y2="104" stroke={partStroke("aero", "#cbd5e1")} strokeWidth="1" />
-          <line x1="540" y1="122" x2="660" y2="122" stroke={partStroke("aero", "#cbd5e1")} strokeWidth="1" />
-          {/* Rear wing pylon connecting to body */}
+          {/* Front wing — right side, low and slightly ahead of front wheel */}
           <rect
             x="555"
-            y="125"
-            width="6"
-            height="55"
+            y="212"
+            width="105"
+            height="11"
+            rx="2"
+            fill={fillBody}
+            stroke={partStroke("aero")}
+            strokeWidth={partStrokeWidth("aero")}
+          />
+          {/* Secondary flap above the main plane */}
+          <rect
+            x="572"
+            y="201"
+            width="82"
+            height="7"
+            rx="1.5"
             fill={fillMid}
             stroke={partStroke("aero", "#cbd5e1")}
+          />
+          {/* Front wing endplate (vertical) */}
+          <path
+            d="M 658 195 L 676 195 L 676 232 L 666 234 L 658 230 Z"
+            fill={fillMid}
+            stroke={partStroke("aero")}
+            strokeWidth={partStrokeWidth("aero")}
           />
         </g>
 
-        {/* ------------------------------------------------- CHASSIS / BODY */}
+        {/* =========================================== MASS & BODY ===== */}
         <g {...partProps("mass_geometry")}>
-          {/* Nose cone — long tapered shape from front-wing area up to monocoque */}
+          {/* The body silhouette is one continuous path:
+              floor → up at rear bulkhead → engine-cover hump → over the
+              cockpit dip → dash → long nose-cone taper → nose tip → floor.
+              Uses quadratic beziers so curves stay smooth. */}
           <path
-            d="M 110 222 L 115 198 L 220 150 L 220 222 Z"
+            d="
+              M 110 222
+              L 110 138
+              Q 132 92 200 90
+              Q 270 90 322 122
+              L 348 122
+              L 358 128
+              L 366 148
+              L 408 148
+              L 416 132
+              Q 488 160 555 200
+              Q 598 218 624 222
+              L 110 222
+              Z
+            "
             fill={fillBody}
             stroke={partStroke("mass_geometry")}
             strokeWidth={partStrokeWidth("mass_geometry")}
+            strokeLinejoin="round"
           />
-          {/* Main monocoque — driver cell + rear bodywork */}
+
+          {/* Cockpit interior — sits in the dip in the silhouette */}
           <path
-            d="M 220 150 L 260 115 L 350 105 L 425 138 L 540 150 L 540 222 L 220 222 Z"
-            fill={fillBody}
-            stroke={partStroke("mass_geometry")}
-            strokeWidth={partStrokeWidth("mass_geometry")}
-          />
-          {/* Cockpit opening — driver sits here */}
-          <path
-            d="M 268 132 L 333 122 L 348 152 L 290 152 Z"
+            d="M 366 148 L 408 148 L 408 170 L 367 170 Z"
             fill={fillCockpit}
-            stroke={partStroke("mass_geometry", "#cbd5e1")}
+            stroke="#cbd5e1"
             strokeWidth="0.8"
           />
+
+          {/* Roll hoop — BEHIND the helmet (to the left, since facing right) */}
+          <rect
+            x="350"
+            y="62"
+            width="9"
+            height="80"
+            rx="2"
+            fill={fillMid}
+            stroke={partStroke("mass_geometry", "#94a3b8")}
+            strokeWidth={partStrokeWidth("mass_geometry")}
+          />
+
           {/* Driver helmet */}
           <circle
-            cx="305"
-            cy="115"
-            r="18"
+            cx="386"
+            cy="112"
+            r="19"
             fill={fillHelmet}
             stroke={partStroke("mass_geometry")}
             strokeWidth="1"
           />
-          {/* Helmet visor */}
+          {/* Helmet visor — faces forward (right) */}
           <path
-            d="M 290 113 Q 305 105 320 113 L 320 119 L 290 119 Z"
+            d="M 387 104 Q 403 107 403 121 L 403 126 L 387 126 Z"
             fill={fillVisor}
           />
-          {/* Roll hoop — tall vertical bar behind driver */}
+
+          {/* Wing mirror */}
           <rect
-            x="348"
-            y="78"
-            width="8"
-            height="48"
-            rx="2"
+            x="417"
+            y="138"
+            width="7"
+            height="4"
+            rx="1"
             fill={fillMid}
-            stroke={partStroke("mass_geometry")}
-            strokeWidth={partStrokeWidth("mass_geometry")}
+            stroke="#cbd5e1"
           />
-          {/* Side mirror hint */}
-          <rect x="248" y="135" width="6" height="4" rx="1" fill={fillMid} stroke="#cbd5e1" />
-          {/* CG marker */}
+
+          {/* CG marker — center of the chassis */}
           <g opacity="0.85">
             <circle
-              cx="395"
-              cy="190"
+              cx="325"
+              cy="195"
               r="6"
               fill="none"
               stroke={partStroke("mass_geometry", accent)}
               strokeWidth="0.9"
             />
-            <line x1="389" y1="190" x2="401" y2="190" stroke={partStroke("mass_geometry", accent)} strokeWidth="0.9" />
-            <line x1="395" y1="184" x2="395" y2="196" stroke={partStroke("mass_geometry", accent)} strokeWidth="0.9" />
+            <line
+              x1="319"
+              y1="195"
+              x2="331"
+              y2="195"
+              stroke={partStroke("mass_geometry", accent)}
+              strokeWidth="0.9"
+            />
+            <line
+              x1="325"
+              y1="189"
+              x2="325"
+              y2="201"
+              stroke={partStroke("mass_geometry", accent)}
+              strokeWidth="0.9"
+            />
           </g>
         </g>
 
-        {/* ----------------------------------------------------- POWERTRAIN */}
+        {/* ============================================ POWERTRAIN ===== */}
+        {/* Powertrain reads as surface accents on the body silhouette: side-
+            pod cooling grille, airbox bulge on top of the engine cover, and
+            exhaust tip at the rear. Keeps the chassis silhouette intact. */}
         <g {...partProps("powertrain")}>
-          {/* Engine bay visible behind driver — sits inside the body */}
+          {/* Sidepod cooling grille */}
           <rect
-            x="360"
-            y="155"
-            width="170"
-            height="60"
+            x="160"
+            y="160"
+            width="100"
+            height="32"
             rx="3"
-            fill={fillEngine}
+            fill={fillMid}
             stroke={partStroke("powertrain")}
             strokeWidth={partStrokeWidth("powertrain")}
           />
-          {/* Engine cooling fins / cylinder hints */}
-          {[375, 390, 405, 420, 435, 450, 465].map((x) => (
+          {[170, 182, 194, 206, 218, 230, 242, 254].map((x) => (
             <line
-              key={x}
+              key={`fin-${x}`}
               x1={x}
-              y1={165}
+              y1={164}
               x2={x}
-              y2={205}
+              y2={188}
               stroke={partStroke("powertrain", "#94a3b8")}
-              strokeWidth="1.2"
+              strokeWidth="0.9"
             />
           ))}
-          {/* Sidepod intake hint */}
-          <path
-            d="M 480 162 L 525 162 L 522 195 L 480 195 Z"
+          {/* Airbox bulge on top of the engine cover */}
+          <ellipse
+            cx="220"
+            cy="92"
+            rx="32"
+            ry="11"
             fill={fillMid}
-            stroke={partStroke("powertrain", "#cbd5e1")}
+            stroke={partStroke("powertrain")}
+            strokeWidth={partStrokeWidth("powertrain")}
+          />
+          {/* Airbox intake snorkel — tiny */}
+          <rect
+            x="216"
+            y="77"
+            width="10"
+            height="8"
+            rx="2"
+            fill={fillMid}
+            stroke={partStroke("powertrain", "#94a3b8")}
             strokeWidth="0.8"
           />
-          {/* Exhaust tip exiting at rear */}
-          <rect x="530" y="180" width="18" height="8" rx="3" fill={fillMid} stroke={partStroke("powertrain", "#94a3b8")} />
+          {/* Exhaust tip exiting at the rear */}
+          <rect
+            x="98"
+            y="170"
+            width="18"
+            height="10"
+            rx="3"
+            fill={fillMid}
+            stroke={partStroke("powertrain", "#94a3b8")}
+            strokeWidth={partStrokeWidth("powertrain", 1)}
+          />
         </g>
 
-        {/* ----------------------------------------------------- SUSPENSION */}
+        {/* ============================================ SUSPENSION ===== */}
         <g {...partProps("suspension")}>
-          {/* Front upper A-arm — wheel hub → bulkhead high */}
+          {/* Rear suspension — wheel center at (200, 210) */}
           <line
-            x1="170"
+            x1="200"
             y1="200"
-            x2="225"
-            y2="165"
+            x2="252"
+            y2="168"
             stroke={partStroke("suspension", susStroke)}
             strokeWidth={partStrokeWidth("suspension", 2.5)}
             strokeLinecap="round"
           />
-          {/* Front lower A-arm */}
           <line
-            x1="170"
-            y1="218"
-            x2="225"
-            y2="210"
+            x1="200"
+            y1="220"
+            x2="252"
+            y2="215"
+            stroke={partStroke("suspension", susStroke)}
+            strokeWidth={partStrokeWidth("suspension", 2.5)}
+            strokeLinecap="round"
+          />
+          {/* Rear pushrod (thinner) */}
+          <line
+            x1="210"
+            y1="208"
+            x2="255"
+            y2="158"
+            stroke={partStroke("suspension", susStroke)}
+            strokeWidth={partStrokeWidth("suspension", 1.5)}
+            strokeLinecap="round"
+          />
+
+          {/* Front suspension — wheel center at (500, 210) */}
+          <line
+            x1="500"
+            y1="200"
+            x2="450"
+            y2="172"
+            stroke={partStroke("suspension", susStroke)}
+            strokeWidth={partStrokeWidth("suspension", 2.5)}
+            strokeLinecap="round"
+          />
+          <line
+            x1="500"
+            y1="220"
+            x2="450"
+            y2="218"
             stroke={partStroke("suspension", susStroke)}
             strokeWidth={partStrokeWidth("suspension", 2.5)}
             strokeLinecap="round"
           />
           {/* Front pushrod */}
           <line
-            x1="180"
-            y1="205"
-            x2="235"
-            y2="155"
-            stroke={partStroke("suspension", susStroke)}
-            strokeWidth={partStrokeWidth("suspension", 1.5)}
-            strokeLinecap="round"
-          />
-          {/* Rear upper A-arm */}
-          <line
-            x1="490"
-            y1="200"
-            x2="445"
-            y2="170"
-            stroke={partStroke("suspension", susStroke)}
-            strokeWidth={partStrokeWidth("suspension", 2.5)}
-            strokeLinecap="round"
-          />
-          {/* Rear lower A-arm */}
-          <line
-            x1="490"
-            y1="220"
-            x2="445"
-            y2="215"
-            stroke={partStroke("suspension", susStroke)}
-            strokeWidth={partStrokeWidth("suspension", 2.5)}
-            strokeLinecap="round"
-          />
-          {/* Rear pushrod */}
-          <line
-            x1="480"
-            y1="205"
-            x2="438"
+            x1="492"
+            y1="208"
+            x2="446"
             y2="160"
             stroke={partStroke("suspension", susStroke)}
             strokeWidth={partStrokeWidth("suspension", 1.5)}
@@ -304,71 +386,82 @@ export function CarDiagram({ selected, onSelect }: Props) {
           />
         </g>
 
-        {/* ---------------------------------------------------------- TIRES */}
+        {/* ================================================ TIRES ===== */}
         <g {...partProps("tire")}>
-          {/* Front wheel — outer tire */}
+          {/* Rear wheel */}
           <circle
-            cx="170"
+            cx="200"
             cy="210"
-            r="32"
+            r="38"
             fill={fillRubber}
             stroke={partStroke("tire", "#94a3b8")}
             strokeWidth={partStrokeWidth("tire", 1)}
           />
-          {/* Front wheel — inner rim */}
           <circle
-            cx="170"
+            cx="200"
             cy="210"
-            r="17"
+            r="21"
             fill={fillRim}
             stroke="#cbd5e1"
             strokeWidth="0.8"
           />
-          {/* Spokes */}
-          <line x1="170" y1="195" x2="170" y2="225" stroke="#94a3b8" strokeWidth="0.9" />
-          <line x1="155" y1="210" x2="185" y2="210" stroke="#94a3b8" strokeWidth="0.9" />
-          {/* Hub center */}
-          <circle cx="170" cy="210" r="3" fill="#94a3b8" />
+          {/* 5-spoke rim pattern */}
+          {[0, 72, 144, 216, 288].map((angle) => {
+            const rad = ((angle - 90) * Math.PI) / 180;
+            return (
+              <line
+                key={`rs-${angle}`}
+                x1={200}
+                y1={210}
+                x2={200 + 20 * Math.cos(rad)}
+                y2={210 + 20 * Math.sin(rad)}
+                stroke="#94a3b8"
+                strokeWidth="1.2"
+              />
+            );
+          })}
+          <circle cx="200" cy="210" r="3.5" fill="#94a3b8" />
 
-          {/* Rear wheel — slightly larger */}
+          {/* Front wheel — slightly smaller */}
           <circle
-            cx="490"
+            cx="500"
             cy="210"
-            r="36"
+            r="34"
             fill={fillRubber}
             stroke={partStroke("tire", "#94a3b8")}
             strokeWidth={partStrokeWidth("tire", 1)}
           />
           <circle
-            cx="490"
+            cx="500"
             cy="210"
-            r="19"
+            r="18"
             fill={fillRim}
             stroke="#cbd5e1"
             strokeWidth="0.8"
           />
-          <line x1="490" y1="193" x2="490" y2="227" stroke="#94a3b8" strokeWidth="0.9" />
-          <line x1="473" y1="210" x2="507" y2="210" stroke="#94a3b8" strokeWidth="0.9" />
-          <circle cx="490" cy="210" r="3" fill="#94a3b8" />
+          {[0, 72, 144, 216, 288].map((angle) => {
+            const rad = ((angle - 90) * Math.PI) / 180;
+            return (
+              <line
+                key={`fs-${angle}`}
+                x1={500}
+                y1={210}
+                x2={500 + 17 * Math.cos(rad)}
+                y2={210 + 17 * Math.sin(rad)}
+                stroke="#94a3b8"
+                strokeWidth="1.2"
+              />
+            );
+          })}
+          <circle cx="500" cy="210" r="3.5" fill="#94a3b8" />
         </g>
 
-        {/* --------------------------------------------------------- BRAKES */}
+        {/* =============================================== BRAKES ===== */}
         <g {...partProps("brakes")}>
-          {/* Front brake caliper sitting on top of front-wheel rim */}
+          {/* Rear brake caliper — atop the rim */}
           <rect
-            x="156"
-            y="184"
-            width="14"
-            height="11"
-            rx="2"
-            fill={fillMid}
-            stroke={partStroke("brakes", brakeStroke)}
-            strokeWidth={partStrokeWidth("brakes", 1.5)}
-          />
-          {/* Rear brake caliper */}
-          <rect
-            x="476"
-            y="180"
+            x="186"
+            y="183"
             width="14"
             height="12"
             rx="2"
@@ -376,9 +469,20 @@ export function CarDiagram({ selected, onSelect }: Props) {
             stroke={partStroke("brakes", brakeStroke)}
             strokeWidth={partStrokeWidth("brakes", 1.5)}
           />
+          {/* Front brake caliper */}
+          <rect
+            x="486"
+            y="185"
+            width="14"
+            height="11"
+            rx="2"
+            fill={fillMid}
+            stroke={partStroke("brakes", brakeStroke)}
+            strokeWidth={partStrokeWidth("brakes", 1.5)}
+          />
         </g>
 
-        {/* Direction labels — front/rear hints */}
+        {/* Direction labels */}
         <g opacity="0.55">
           <polygon points="10,260 20,255 20,265" fill="#94a3b8" />
           <text
@@ -388,7 +492,7 @@ export function CarDiagram({ selected, onSelect }: Props) {
             fill="#94a3b8"
             fontFamily="JetBrains Mono, monospace"
           >
-            FRONT
+            REAR
           </text>
         </g>
         <g opacity="0.55">
@@ -401,7 +505,7 @@ export function CarDiagram({ selected, onSelect }: Props) {
             fill="#94a3b8"
             fontFamily="JetBrains Mono, monospace"
           >
-            REAR
+            FRONT
           </text>
         </g>
       </svg>
