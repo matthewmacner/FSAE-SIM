@@ -9,6 +9,7 @@ import { TirePanel } from "./panels/TirePanel";
 import { AeroPanel } from "./panels/AeroPanel";
 import { PowertrainPanel } from "./panels/PowertrainPanel";
 import { BrakesPanel } from "./panels/BrakesPanel";
+import { DampersPanel } from "./panels/DampersPanel";
 import { useStore } from "./store";
 
 const PANELS: Record<PartKey, () => JSX.Element> = {
@@ -18,6 +19,7 @@ const PANELS: Record<PartKey, () => JSX.Element> = {
   aero: () => <AeroPanel />,
   powertrain: () => <PowertrainPanel />,
   brakes: () => <BrakesPanel />,
+  dampers: () => <DampersPanel />,
 };
 
 export default function App() {
